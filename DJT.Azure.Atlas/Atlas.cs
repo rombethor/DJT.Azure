@@ -9,8 +9,12 @@ namespace DJT.Azure.Atlas
     public class Atlas
     {
         
-        private string? secretKey = null;
-        public string Secret { set { secretKey = value; } }
+        private static string? secretKey = null;
+
+        /// <summary>
+        /// Secret Atlas key
+        /// </summary>
+        public static string Secret { set { secretKey = value; } }
 
         private static Atlas? _atlas;
         /// <summary>
@@ -19,22 +23,20 @@ namespace DJT.Azure.Atlas
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public Atlas GetInstance()
+        public static Atlas GetInstance()
         {
             if (string.IsNullOrWhiteSpace(secretKey))
                 throw new ArgumentException("Secret not set in Atlas");
             if (_atlas == null)
-                _atlas = new Atlas(secretKey);
+                _atlas = new Atlas();
             return _atlas;
         }
 
         /// <summary>
         /// Construct this helper with the secret key
         /// </summary>
-        /// <param name="SecretKey"></param>
-        private Atlas(string SecretKey)
+        private Atlas()
         {
-            secretKey = SecretKey;
         }
 
         /// <summary>
