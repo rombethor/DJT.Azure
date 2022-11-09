@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.1.0</Version>
+    <Version>6.2.1</Version>
     <Authors>Daniel James Thorne</Authors>
     <Description>Helper singleton client class for using the Azure Maps API</Description>
     <RepositoryUrl>https://github.com/rombethor/DJT.Azure</RepositoryUrl>

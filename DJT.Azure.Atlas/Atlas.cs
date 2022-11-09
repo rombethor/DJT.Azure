@@ -92,7 +92,25 @@ namespace DJT.Azure.Atlas
             else return new List<AtlasResult>();
         }
 
-
+        /// <summary>
+        /// Get an address from coordinates provided
+        /// </summary>
+        /// <param name="longitude"></param>
+        /// <param name="latitude"></param>
+        /// <returns></returns>
+        public async Task<AtlasAddressList?> ReverseLookup(double longitude, double latitude)
+        {
+            HttpClient client = new HttpClient();
+            var url = "https://" + $"atlas.microsoft.com/search/address/reverse/json?api-version=1.0&query={longitude},{latitude}&subscription-key={secretKey}";
+            var result = await client.GetAsync(url);
+            if (result.IsSuccessStatusCode)
+            {
+                string rawData = await result.Content.ReadAsStringAsync();
+                AtlasAddressList? atlasAddressList = JsonSerializer.Deserialize<AtlasAddressList>(rawData);
+                return atlasAddressList;
+            }
+            return null;
+        }
 
     }
 }
