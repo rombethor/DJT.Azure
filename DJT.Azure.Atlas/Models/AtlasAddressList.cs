@@ -16,6 +16,6 @@ namespace DJT.Azure.Atlas.Models
         /// List of address results
         /// </summary>
         [JsonPropertyName("addresses")]
-        public IEnumerable<AtlasResult> Addresses { get; set; } = Array.Empty<AtlasResult>();
+        public IEnumerable<GeocodeResult> Addresses { get; set; } = Array.Empty<GeocodeResult>();
     }
 }

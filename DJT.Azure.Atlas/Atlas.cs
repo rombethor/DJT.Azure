@@ -101,7 +101,7 @@ namespace DJT.Azure.Atlas
         public async Task<AtlasAddressList?> ReverseLookup(double longitude, double latitude)
         {
             HttpClient client = new HttpClient();
-            var url = "https://" + $"atlas.microsoft.com/search/address/reverse/json?api-version=1.0&query={longitude},{latitude}&subscription-key={secretKey}";
+            var url = "https://" + $"atlas.microsoft.com/search/address/reverse/json?api-version=1.0&query={latitude},{longitude}&subscription-key={secretKey}";
             var result = await client.GetAsync(url);
             if (result.IsSuccessStatusCode)
             {
