@@ -59,6 +59,31 @@ namespace DJT.Azure.BlobStorage
         }
 
         /// <summary>
+        /// Store a stream of data as a blob, overwriting if already exists
+        /// </summary>
+        /// <param name="blobName"></param>
+        /// <param name="data"></param>
+        /// <param name="mimeType"></param>
+        /// <returns>The absolute URI of the blob</returns>
+        public async Task<string> UploadBlobAsync(string blobName, Stream data, string? mimeType = null)
+        {
+            BlobClient blobClient = containerClient.GetBlobClient(blobName);
+            if (!string.IsNullOrWhiteSpace(mimeType))
+            {
+                BlobHttpHeaders headers = new()
+                {
+                    ContentType = mimeType
+                };
+                await blobClient.UploadAsync(data, new BlobUploadOptions() { HttpHeaders = headers });
+            }
+            else
+            {
+                await blobClient.UploadAsync(data, true);
+            }
+            return blobClient.Uri.AbsoluteUri;
+        }
+
+        /// <summary>
         /// Store a string as a blob, overwriting if already exists
         /// </summary>
         /// <param name="blobName"></param>
@@ -79,6 +104,31 @@ namespace DJT.Azure.BlobStorage
                     blobClient.Upload(data, new BlobUploadOptions() { HttpHeaders = headers });
                 }
                 blobClient.Upload(stream, true);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Store a string as a blob, overwriting if already exists
+        /// </summary>
+        /// <param name="blobName"></param>
+        /// <param name="data"></param>
+        /// <param name="mimeType"></param>
+        /// <returns></returns>
+        public async Task<bool> UploadStringAsync(string blobName, string data, string? mimeType = null)
+        {
+            BlobClient blobClient = containerClient.GetBlobClient(blobName);
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(data)))
+            {
+                if (!string.IsNullOrWhiteSpace(mimeType))
+                {
+                    BlobHttpHeaders headers = new()
+                    {
+                        ContentType = mimeType
+                    };
+                    await blobClient.UploadAsync(data, new BlobUploadOptions() { HttpHeaders = headers });
+                }
+                await blobClient.UploadAsync(stream, true);
             }
             return true;
         }
