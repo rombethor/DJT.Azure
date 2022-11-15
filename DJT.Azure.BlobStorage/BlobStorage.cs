@@ -38,11 +38,23 @@ namespace DJT.Azure.BlobStorage
         /// </summary>
         /// <param name="blobName"></param>
         /// <param name="data"></param>
+        /// <param name="mimeType"></param>
         /// <returns>The absolute URI of the blob</returns>
-        public string UploadBlob(string blobName, Stream data)
+        public string UploadBlob(string blobName, Stream data, string? mimeType = null)
         {
             BlobClient blobClient = containerClient.GetBlobClient(blobName);
-            blobClient.Upload(data, true);
+            if (!string.IsNullOrWhiteSpace(mimeType))
+            {
+                BlobHttpHeaders headers = new()
+                {
+                    ContentType = mimeType
+                };
+                blobClient.Upload(data, new BlobUploadOptions() { HttpHeaders = headers });
+            }
+            else
+            {
+                blobClient.Upload(data, true);
+            }
             return blobClient.Uri.AbsoluteUri;
         }
 
@@ -51,12 +63,21 @@ namespace DJT.Azure.BlobStorage
         /// </summary>
         /// <param name="blobName"></param>
         /// <param name="data"></param>
+        /// <param name="mimeType"></param>
         /// <returns></returns>
-        public bool UploadString(string blobName, string data)
+        public bool UploadString(string blobName, string data, string? mimeType = null)
         {
             BlobClient blobClient = containerClient.GetBlobClient(blobName);
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(data)))
             {
+                if (!string.IsNullOrWhiteSpace(mimeType))
+                {
+                    BlobHttpHeaders headers = new()
+                    {
+                        ContentType = mimeType
+                    };
+                    blobClient.Upload(data, new BlobUploadOptions() { HttpHeaders = headers });
+                }
                 blobClient.Upload(stream, true);
             }
             return true;

@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.0.0</Version>
+    <Version>6.1.0</Version>
     <Authors>Daniel James Thorne</Authors>
     <RepositoryUrl>https://github.com/rombethor/DJT.Azure</RepositoryUrl>
     <Description>Helper class for the basics of azure blob storage: uploading, searching and downloading files and strings.</Description>
@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.13.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.14.1" />
   </ItemGroup>
 
 </Project>
