@@ -93,6 +93,29 @@ namespace DJT.Azure.Atlas
         }
 
         /// <summary>
+        /// Free-text search for an address within the specified country
+        /// </summary>
+        /// <param name="query">Free text search</param>
+        /// <param name="countryCode">Alpha-3 country code</param>
+        /// <param name="limit">Number of results to return</param>
+        /// <returns></returns>
+        public async Task<List<AtlasResult>> FindAddress(string query, string countryCode, int limit = 5)
+        {
+            using HttpClient client = new();
+
+            var url = "https://" + $"atlas.microsoft.com/search/fuzzy/json?api-version=1.0&subscription-key={secretKey}&query={query}&countrySet={countryCode}&limit={limit}&idxSet=PAD";
+
+            var result = await client.GetAsync(url);
+            if (result.IsSuccessStatusCode)
+            {
+                string rawdata = await result.Content.ReadAsStringAsync();
+                AtlasResponse? atlasResponse = JsonSerializer.Deserialize<AtlasResponse>(rawdata);
+                return atlasResponse?.Results ?? new List<AtlasResult>();
+            }
+            else return new();
+        }
+
+        /// <summary>
         /// Get an address from coordinates provided
         /// </summary>
         /// <param name="longitude"></param>
